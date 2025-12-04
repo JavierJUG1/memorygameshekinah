@@ -32,7 +32,7 @@
             position: absolute;
             top: clamp(20px, 4vw, 50px);
             left: clamp(20px, 4vw, 50px);
-            font-size: clamp(40px, 6vw, 80px);
+            font-size: clamp(58px, 7.5vw, 105px);
             font-weight: 700;
             color: #f9cf63;
             text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
@@ -42,11 +42,11 @@
 
         /* ------------------- ELEMENTOS DECORATIVOS ------------------- */
 
-        .estrellas {
+        .estrellas{
             position: absolute;
-            top: clamp(20px, 4vw, 50px);
-            right: clamp(20px, 4vw, 50px);
-            width: clamp(150px, 20vw, 300px);
+            top: -40px;     /* se sube para que se recorte por arriba  */
+            right: -30px;   /* se mueve a la derecha para recorte lateral */
+            width: clamp(740px, 30vw, 480px);
             pointer-events: none;
         }
 
@@ -109,7 +109,7 @@
 
         .tablero {
             width: 90%;
-            max-width: 900px;
+            max-width: 1200px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: clamp(10px, 2vw, 20px);
