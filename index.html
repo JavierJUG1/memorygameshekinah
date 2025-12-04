@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Concéntrese - Memory Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-image: url("fondo-azul.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ------------------- TÍTULO ------------------- */
+
+        .titulo {
+            position: absolute;
+            top: clamp(20px, 4vw, 50px);
+            left: clamp(20px, 4vw, 50px);
+            font-size: clamp(40px, 6vw, 80px);
+            font-weight: 700;
+            color: #f9cf63;
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+            font-family: "Oleo Script", cursive;
+            z-index: 20;
+        }
+
+        /* ------------------- ELEMENTOS DECORATIVOS ------------------- */
+
+        .estrellas {
+            position: absolute;
+            top: clamp(20px, 4vw, 50px);
+            right: clamp(20px, 4vw, 50px);
+            width: clamp(150px, 20vw, 300px);
+            pointer-events: none;
+        }
+
+        .rama-izq,
+        .rama-der {
+            position: absolute;
+            bottom: clamp(10px, 3vw, 40px);
+            width: clamp(80px, 12vw, 150px);
+            pointer-events: none;
+        }
+
+        .rama-izq {
+            left: clamp(10px, 3vw, 40px);
+        }
+
+        .rama-der {
+            right: clamp(10px, 3vw, 40px);
+        }
+
+        /* ------------------- BOTÓN INICIO CENTRADO ------------------- */
+
+        .inicio-centro {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        #btnIniciar {
+            background: #ffd36c;
+            color: #2a2a2a;
+            padding: clamp(12px, 2vw, 20px) clamp(30px, 4vw, 60px);
+            border: none;
+            border-radius: 16px;
+            font-size: clamp(20px, 4vw, 34px);
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.30);
+            transition: .2s;
+        }
+
+        #btnIniciar:hover {
+            background: #ffcc4f;
+            transform: scale(1.06);
+        }
+
+        /* ------------------- CONTENEDOR JUEGO ------------------- */
+
+        .contenedor-juego {
+            width: 100%;
+            padding-top: clamp(180px, 22vw, 260px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ------------------- TABLERO RESPONSIVO ------------------- */
+
+        .tablero {
+            width: 90%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(10px, 2vw, 20px);
+        }
+
+        /* ------------------- CARTAS ------------------- */
+
+        .carta {
+            aspect-ratio: 403 / 243;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.35s ease;
+            cursor: pointer;
+        }
+
+        .carta.volteada {
+            transform: rotateY(180deg);
+        }
+
+        /* cartas encontradas no aceptan clics */
+        .carta.encontrada {
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .cara {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: clamp(8px, 1vw, 14px);
+            overflow: hidden;
+            backface-visibility: hidden;
+        }
+
+        .cara.trasera {
+            transform: rotateY(180deg);
+        }
+
+        .img-carta {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* ------------------- MODAL GANASTE ------------------- */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+            z-index: 30;
+        }
+
+        .modal.activo {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #ffffffee;
+            padding: clamp(20px, 4vw, 40px);
+            border-radius: 18px;
+            text-align: center;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            animation: aparecer .4s ease-out;
+        }
+
+        @keyframes aparecer {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: clamp(24px, 5vw, 36px);
+            margin-bottom: 20px;
+        }
+
+        #btnReiniciar {
+            background: #ffd36c;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: clamp(16px, 3vw, 22px);
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* ------------------- BREAKPOINTS EXTRA ------------------- */
+
+        @media (max-width: 520px) {
+
+            .tablero {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .contenedor-juego {
+                padding-top: 180px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .tablero {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TÍTULO Y DECORACIÓN -->
+    <div class="titulo">Concéntrese</div>
+    <img src="estrellas.svg" class="estrellas">
+    <img src="rama-izquierda.svg" class="rama-izq">
+    <img src="rama-derecha.svg" class="rama-der">
+
+    <!-- BOTÓN INICIO CENTRADO -->
+    <div id="inicioCentro" class="inicio-centro">
+        <button id="btnIniciar">Iniciar Juego</button>
+    </div>
+
+    <!-- CONTENEDOR DEL JUEGO -->
+    <div id="contenedorJuego" class="contenedor-juego">
+        <div id="tablero" class="tablero"></div>
+    </div>
+
+    <!-- MODAL GANASTE -->
+    <div id="modalGanaste" class="modal">
+        <div class="modal-content">
+            <h2>¡Felicidades!</h2>
+            <h2>!מַזָּל טוֹב</h2>
+            <button id="btnReiniciar">Jugar de nuevo</button>
+        </div>
+    </div>
+
+    <script>
+
+        /* ------------------- VARIABLES ------------------- */
+        const tablero = document.getElementById("tablero");
+        const btnIniciar = document.getElementById("btnIniciar");
+        const inicioCentro = document.getElementById("inicioCentro");
+        const contenedorJuego = document.getElementById("contenedorJuego");
+        const modal = document.getElementById("modalGanaste");
+        const btnReiniciar = document.getElementById("btnReiniciar");
+
+        const frontImages = [
+            "1.png", "2.png", "3.png", "4.png", "5.png", "6.png",
+            "7.png", "8.png", "9.png", "10.png", "11.png", "12.png"
+        ];
+
+        const iconImages = [
+            "Sevibon.png",
+            "Moneda.png",
+            "Aceite.png",
+            "Menorah.png",
+            "Sufganiot.png",
+            "Torah.png"
+        ];
+
+        let carta1 = null;
+        let carta2 = null;
+        let bloqueo = false;
+        let paresEncontrados = 0;
+
+        /* ------------------- INICIO DEL JUEGO ------------------- */
+
+        btnIniciar.addEventListener("click", iniciarJuego);
+        btnReiniciar.addEventListener("click", iniciarJuego);
+
+        function iniciarJuego() {
+
+            inicioCentro.style.display = "none";
+            contenedorJuego.style.display = "flex";
+
+            paresEncontrados = 0;
+            modal.classList.remove("activo");
+            tablero.innerHTML = "";
+            carta1 = null;
+            carta2 = null;
+            bloqueo = false;
+
+            const backs = [...iconImages, ...iconImages];
+            mezclar(backs);
+
+            for (let i = 0; i < 12; i++) {
+
+                const carta = document.createElement("div");
+                carta.classList.add("carta");
+                carta.dataset.icon = backs[i];
+
+                carta.innerHTML = `
+            <div class="cara frontal">
+                <img src="${frontImages[i]}" class="img-carta">
+            </div>
+            <div class="cara trasera">
+                <img src="${backs[i]}" class="img-carta">
+            </div>
+        `;
+
+                carta.addEventListener("click", () => voltear(carta));
+                tablero.appendChild(carta);
+            }
+        }
+
+        function mezclar(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        }
+
+        function voltear(carta) {
+
+            if (bloqueo) return;
+            if (carta === carta1) return;
+            if (carta.classList.contains("encontrada")) return;
+
+            carta.classList.add("volteada");
+
+            if (!carta1) {
+                carta1 = carta;
+            } else {
+                carta2 = carta;
+                verificar();
+            }
+        }
+
+        function verificar() {
+
+            bloqueo = true;
+
+            const icono1 = carta1.dataset.icon;
+            const icono2 = carta2.dataset.icon;
+
+            if (icono1 === icono2) {
+
+                // Marcar como encontradas
+                carta1.classList.add("encontrada");
+                carta2.classList.add("encontrada");
+
+                paresEncontrados++;
+                carta1 = null;
+                carta2 = null;
+                bloqueo = false;
+
+                if (paresEncontrados === 6) {
+                    ganar();
+                }
+
+            } else {
+
+                setTimeout(() => {
+                    carta1.classList.remove("volteada");
+                    carta2.classList.remove("volteada");
+
+                    carta1 = null;
+                    carta2 = null;
+                    bloqueo = false;
+                }, 900);
+            }
+        }
+
+        function ganar() {
+            modal.classList.add("activo");
+            inicioCentro.style.display = "flex";
+        }
+
+    </script>
+
+</body>
+
+</html>
