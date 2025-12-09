@@ -26,123 +26,216 @@
             position: relative;
         }
 
-        /* ------------------- TÍTULO ------------------- */
+        /* ------------------- BOTÓN MUTE ------------------- */
+        .mute-btn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: .2s;
+        }
 
+        .mute-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* ------------------- TÍTULO ------------------- */
         .titulo {
             position: absolute;
-            top: clamp(20px, 4vw, 50px);
-            left: clamp(20px, 4vw, 50px);
-            font-size: clamp(58px, 7.5vw, 105px);
+            top: 20px;
+            left: 20px;
+            font-size: clamp(38px, 6vw, 72px);
+            font-family: "Oleo Script", cursive;
             font-weight: 700;
             color: #f9cf63;
-            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
-            font-family: "Oleo Script", cursive;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
             z-index: 20;
         }
 
-        /* ------------------- ELEMENTOS DECORATIVOS ------------------- */
-
-        .estrellas{
+        /* ------------------- DECORACIONES ------------------- */
+        .estrellas {
             position: absolute;
-            top: -40px;     /* se sube para que se recorte por arriba  */
-            right: -30px;   /* se mueve a la derecha para recorte lateral */
-            width: clamp(740px, 30vw, 480px);
+            top: -40px;
+            right: -25px;
+            width: clamp(260px, 40vw, 480px);
             pointer-events: none;
         }
 
         .rama-izq,
         .rama-der {
             position: absolute;
-            bottom: clamp(10px, 3vw, 40px);
-            width: clamp(80px, 12vw, 150px);
+            bottom: 20px;
+            width: clamp(70px, 12vw, 150px);
             pointer-events: none;
         }
 
         .rama-izq {
-            left: clamp(10px, 3vw, 40px);
+            left: 20px;
         }
 
         .rama-der {
-            right: clamp(10px, 3vw, 40px);
+            right: 20px;
         }
 
-        /* ------------------- BOTÓN INICIO CENTRADO ------------------- */
-
+        /* ------------------- INICIO ------------------- */
         .inicio-centro {
             position: fixed;
             inset: 0;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             z-index: 10;
         }
 
         #btnIniciar {
             background: #ffd36c;
-            color: #2a2a2a;
-            padding: clamp(12px, 2vw, 20px) clamp(30px, 4vw, 60px);
-            border: none;
+            padding: 16px 55px;
             border-radius: 16px;
+            border: none;
             font-size: clamp(20px, 4vw, 34px);
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.30);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             transition: .2s;
         }
 
         #btnIniciar:hover {
+            transform: scale(1.05);
             background: #ffcc4f;
-            transform: scale(1.06);
         }
 
-        /* ------------------- CONTENEDOR JUEGO ------------------- */
-
+        /* ------------------- JUEGO ------------------- */
         .contenedor-juego {
             width: 100%;
-            padding-top: clamp(180px, 22vw, 260px);
+            padding-top: 215px;
             display: none;
             flex-direction: column;
             align-items: center;
         }
 
-        /* ------------------- TABLERO RESPONSIVO ------------------- */
-
+        /* ----------------------------------------------------
+   TABLERO 6 COLUMNAS FIJAS – CON TU CAMBIO DE 60%
+---------------------------------------------------- */
         .tablero {
-            width: 90%;
-            max-width: 1200px;
+            width: 60%;
+            max-width: 1280px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: clamp(10px, 2vw, 20px);
+            grid-template-columns: repeat(6, 1fr);
+            gap: clamp(10px, 1.6vw, 22px);
+            justify-items: center;
         }
 
-        /* ------------------- CARTAS ------------------- */
+        /* Ajuste responsivo del tablero */
+        @media (max-width: 992px) {
 
+            /* tablets horizontales y verticales */
+            .tablero {
+                width: 75%;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            /* tablets pequeñas / phablets */
+            .tablero {
+                width: 85%;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            /* móviles */
+            .tablero {
+                width: 95%;
+            }
+        }
+
+        /* ----------------------------------------------------
+   CARTAS RESPONSIVAS SIN CAMBIAR COLUMNAS
+---------------------------------------------------- */
         .carta {
+            width: 100%;
+            max-width: 180px;
             aspect-ratio: 403 / 243;
+            border-radius: 14px;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.35s ease;
+            transition: .35s ease;
             cursor: pointer;
         }
 
-        .carta.volteada {
-            transform: rotateY(180deg);
+        /* Reducir tamaño en móviles */
+        @media (max-width: 1100px) {
+            .carta {
+                max-width: 165px;
+            }
         }
 
-        /* cartas encontradas no aceptan clics */
-        .carta.encontrada {
-            pointer-events: none;
-            cursor: default;
+        @media (max-width: 992px) {
+            .carta {
+                max-width: 150px;
+            }
         }
 
+        @media (max-width: 820px) {
+            .carta {
+                max-width: 135px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .carta {
+                max-width: 120px;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .carta {
+                max-width: 110px;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .carta {
+                max-width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carta {
+                max-width: 90px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .carta {
+                max-width: 82px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .carta {
+                max-width: 75px;
+            }
+        }
+
+        /* CARAS */
         .cara {
             position: absolute;
             inset: 0;
+            border-radius: 14px;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: clamp(8px, 1vw, 14px);
-            overflow: hidden;
             backface-visibility: hidden;
         }
 
@@ -156,17 +249,24 @@
             object-fit: contain;
         }
 
-        /* ------------------- MODAL GANASTE ------------------- */
+        .carta.volteada {
+            transform: rotateY(180deg);
+        }
 
+        .carta.encontrada {
+            pointer-events: none;
+        }
+
+        /* ------------------- MODAL ------------------- */
         .modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.65);
             display: none;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(6px);
             z-index: 30;
+            backdrop-filter: blur(5px);
         }
 
         .modal.activo {
@@ -175,59 +275,60 @@
 
         .modal-content {
             background: #ffffffee;
-            padding: clamp(20px, 4vw, 40px);
-            border-radius: 18px;
-            text-align: center;
+            padding: 35px;
+            border-radius: 20px;
             width: 90%;
             max-width: 420px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-            animation: aparecer .4s ease-out;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
 
-        @keyframes aparecer {
-            from {
-                transform: scale(0.7);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .modal h2 {
-            font-size: clamp(24px, 5vw, 36px);
-            margin-bottom: 20px;
-        }
-
+        /* RESTAURAR BOTÓN ORIGINAL */
         #btnReiniciar {
             background: #ffd36c;
-            padding: 12px 28px;
+            padding: 12px 30px;
+            border-radius: 16px;
             border: none;
-            border-radius: 12px;
-            font-size: clamp(16px, 3vw, 22px);
+            font-size: 22px;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            transition: 0.2s;
         }
 
-        /* ------------------- BREAKPOINTS EXTRA ------------------- */
-
-        @media (max-width: 520px) {
-
-            .tablero {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .contenedor-juego {
-                padding-top: 180px;
-            }
+        #btnReiniciar:hover {
+            background: #ffcc4f;
+            transform: scale(1.05);
         }
 
-        @media (max-width: 390px) {
-            .tablero {
-                grid-template-columns: repeat(2, 1fr);
+        /* ------------------- CONFETI ORIGINAL RESTAURADO ------------------- */
+        #confeti-container {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: visible;
+            z-index: 99999;
+        }
+
+        .confeti {
+            position: absolute;
+            width: 8px;
+            height: 14px;
+            opacity: 0.9;
+            transform-origin: center;
+            animation: caerConfeti linear forwards;
+        }
+
+        @keyframes caerConfeti {
+            0% {
+                transform: translate(var(--xoffset), -10vh) rotate(var(--rotInicial));
+            }
+
+            100% {
+                transform: translate(var(--xoffsetFinal), 110vh) rotate(var(--rotFinal));
             }
         }
     </style>
@@ -235,18 +336,29 @@
 
 <body>
 
-    <!-- TÍTULO Y DECORACIÓN -->
-    <div class="titulo">Concéntrese</div>
+    <!-- MÚSICA -->
+    <audio id="musicaFondo" src="musica-fondo.mp3" preload="auto" loop></audio>
+    <audio id="audioWin" src="victoria.mp3" preload="auto"></audio>
+
+    <!-- BOTÓN MUTE -->
+    <button id="btnMute" class="mute-btn">🔊</button>
+
+    <!-- CONFETI -->
+    <div id="confeti-container"></div>
+
+    <!-- TÍTULO -->
+    <div class="titulo">Batalla de Memoria Maccabí</div>
+
     <img src="estrellas.svg" class="estrellas">
     <img src="rama-izquierda.svg" class="rama-izq">
     <img src="rama-derecha.svg" class="rama-der">
 
-    <!-- BOTÓN INICIO CENTRADO -->
+    <!-- BOTÓN INICIAR -->
     <div id="inicioCentro" class="inicio-centro">
         <button id="btnIniciar">Iniciar Juego</button>
     </div>
 
-    <!-- CONTENEDOR DEL JUEGO -->
+    <!-- JUEGO -->
     <div id="contenedorJuego" class="contenedor-juego">
         <div id="tablero" class="tablero"></div>
     </div>
@@ -254,34 +366,45 @@
     <!-- MODAL GANASTE -->
     <div id="modalGanaste" class="modal">
         <div class="modal-content">
-            <h2>¡Felicidades!</h2>
-            <h2>!מַזָּל טוֹב</h2>
+            <h2 style="margin-bottom:10px;">¡Felicidades!</h2>
+            <h2 style="margin-bottom:20px;">!מַזָּל טוֹב</h2>
             <button id="btnReiniciar">Jugar de nuevo</button>
         </div>
     </div>
 
     <script>
 
-        /* ------------------- VARIABLES ------------------- */
+        const musicaFondo = document.getElementById("musicaFondo");
+        const sonidoVictoria = document.getElementById("audioWin");
+        const btnMute = document.getElementById("btnMute");
+        let musicaActiva = true;
+
+        btnMute.addEventListener("click", () => {
+            musicaActiva = !musicaActiva;
+            if (musicaActiva) { musicaFondo.play(); btnMute.textContent = "🔊"; }
+            else { musicaFondo.pause(); btnMute.textContent = "🔇"; }
+        });
+
+        /* ---- Juego ---- */
+
         const tablero = document.getElementById("tablero");
         const btnIniciar = document.getElementById("btnIniciar");
+        const btnReiniciar = document.getElementById("btnReiniciar");
         const inicioCentro = document.getElementById("inicioCentro");
         const contenedorJuego = document.getElementById("contenedorJuego");
         const modal = document.getElementById("modalGanaste");
-        const btnReiniciar = document.getElementById("btnReiniciar");
 
         const frontImages = [
             "1.png", "2.png", "3.png", "4.png", "5.png", "6.png",
-            "7.png", "8.png", "9.png", "10.png", "11.png", "12.png"
+            "7.png", "8.png", "9.png", "10.png", "11.png", "12.png",
+            "13.png", "14.png", "15.png", "16.png", "17.png", "18.png",
+            "19.png", "20.png", "21.png", "22.png", "23.png", "24.png"
         ];
 
         const iconImages = [
-            "Sevibon.png",
-            "Moneda.png",
-            "Aceite.png",
-            "Menorah.png",
-            "Sufganiot.png",
-            "Torah.png"
+            "Sevibon.png", "Moneda.png", "Aceite.png", "Menorah.png",
+            "Sufganiot.png", "Torah.png", "Olivo.png", "Templo.png",
+            "Regalo.png", "Banderines.png", "Dulces.png", "Martillo.png"
         ];
 
         let carta1 = null;
@@ -289,15 +412,17 @@
         let bloqueo = false;
         let paresEncontrados = 0;
 
-        /* ------------------- INICIO DEL JUEGO ------------------- */
-
         btnIniciar.addEventListener("click", iniciarJuego);
         btnReiniciar.addEventListener("click", iniciarJuego);
 
         function iniciarJuego() {
-
             inicioCentro.style.display = "none";
             contenedorJuego.style.display = "flex";
+
+            if (musicaActiva) {
+                musicaFondo.volume = 0.55;
+                musicaFondo.play();
+            }
 
             paresEncontrados = 0;
             modal.classList.remove("activo");
@@ -309,7 +434,7 @@
             const backs = [...iconImages, ...iconImages];
             mezclar(backs);
 
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < 24; i++) {
 
                 const carta = document.createElement("div");
                 carta.classList.add("carta");
@@ -337,7 +462,6 @@
         }
 
         function voltear(carta) {
-
             if (bloqueo) return;
             if (carta === carta1) return;
             if (carta.classList.contains("encontrada")) return;
@@ -353,15 +477,13 @@
         }
 
         function verificar() {
-
             bloqueo = true;
 
-            const icono1 = carta1.dataset.icon;
-            const icono2 = carta2.dataset.icon;
+            const icon1 = carta1.dataset.icon;
+            const icon2 = carta2.dataset.icon;
 
-            if (icono1 === icono2) {
+            if (icon1 === icon2) {
 
-                // Marcar como encontradas
                 carta1.classList.add("encontrada");
                 carta2.classList.add("encontrada");
 
@@ -370,7 +492,7 @@
                 carta2 = null;
                 bloqueo = false;
 
-                if (paresEncontrados === 6) {
+                if (paresEncontrados === 12) {
                     ganar();
                 }
 
@@ -379,7 +501,6 @@
                 setTimeout(() => {
                     carta1.classList.remove("volteada");
                     carta2.classList.remove("volteada");
-
                     carta1 = null;
                     carta2 = null;
                     bloqueo = false;
@@ -387,9 +508,72 @@
             }
         }
 
+        /* ---- GANAR ---- */
         function ganar() {
             modal.classList.add("activo");
             inicioCentro.style.display = "flex";
+
+            musicaFondo.pause();
+            musicaFondo.currentTime = 0;
+
+            sonidoVictoria.currentTime = 0;
+            sonidoVictoria.play();
+
+            lanzarConfeti();
+        }
+
+        /* ---- CONFETI RESTAURADO ---- */
+        function lanzarConfeti() {
+
+            const contenedor = document.getElementById("confeti-container");
+
+            let total = 300;
+            let batch = 35;
+            let delay = 150;
+            let lanzados = 0;
+
+            function oleada() {
+
+                for (let i = 0; i < batch; i++) {
+
+                    if (lanzados >= total) return;
+
+                    const c = document.createElement("div");
+                    c.classList.add("confeti");
+
+                    c.style.left = Math.random() * 100 + "vw";
+
+                    const xOffset = (Math.random() * 40 - 20) + "vw";
+                    const xOffsetFinal = (Math.random() * 60 - 30) + "vw";
+                    c.style.setProperty("--xoffset", xOffset);
+                    c.style.setProperty("--xoffsetFinal", xOffsetFinal);
+
+                    c.style.setProperty("--rotInicial", Math.random() * 360 + "deg");
+                    c.style.setProperty("--rotFinal", (Math.random() * 1440 + 720) + "deg");
+
+                    const size = Math.random() * 6 + 6;
+                    c.style.width = size + "px";
+                    c.style.height = (size * 1.6) + "px";
+
+                    const colors = ["#ff595e", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93",
+                        "#ff924c", "#ff4d6d", "#4d96ff", "#6ede8a", "#f72585"];
+                    c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                    const dur = Math.random() * 1.5 + 2.5;
+                    c.style.animationDuration = dur + "s";
+
+                    contenedor.appendChild(c);
+                    lanzados++;
+
+                    setTimeout(() => c.remove(), dur * 1000);
+                }
+
+                if (lanzados < total) {
+                    setTimeout(oleada, delay);
+                }
+            }
+
+            oleada();
         }
 
     </script>
